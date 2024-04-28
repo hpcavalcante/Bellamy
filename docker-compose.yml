@@ -1,0 +1,58 @@
+services:
+
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    restart: unless-stopped
+    networks:
+      - torrent_network
+    ports:
+      - "7878:7878" # Porta do Radarr Web UI
+    volumes:
+      - radarr_config:/config
+      - /mnt/d/Mídia/Filmes:/movies
+
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    restart: unless-stopped
+    networks:
+      - torrent_network
+    ports:
+      - "8989:8989" # Porta do Sonarr Web UI
+    volumes:
+      - sonarr_config:/config
+      - /mnt/d/Mídia/Séries:/tv
+
+  bazarr:
+    image: linuxserver/bazarr
+    container_name: bazarr
+    restart: unless-stopped
+    networks:
+      - torrent_network
+    ports:
+      - "6767:6767" # Porta do Bazarr Web UI
+    volumes:
+      - bazarr_config:/config
+
+  prowlarr:
+    image: hotio/prowlarr
+    container_name: prowlarr
+    restart: unless-stopped
+    networks:
+      - torrent_network
+    ports:
+      - "9696:9696" # Porta do Prowlarr Web UI
+    volumes:
+      - prowlarr_config:/config
+
+networks:
+  torrent_network:
+    external: true
+
+volumes:
+  qbittorrent_config:
+  radarr_config:
+  sonarr_config:
+  bazarr_config:
+  prowlarr_config:
